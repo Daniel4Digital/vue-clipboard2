@@ -1,17 +1,17 @@
-var Clipboard = require('clipboard/dist/clipboard.min.js') // FIXME: workaround for browserify
+const Clipboard = require('clipboard/dist/clipboard.min.js') // FIXME: workaround for browserify
 
-var VueClipboardConfig = {
+const VueClipboardConfig = {
   autoSetContainer: false,
   appendToBody: true // This fixes IE, see #50
 }
 
-var VueClipboard = {
+const VueClipboard = {
   install: function (Vue) {
     Vue.prototype.$clipboardConfig = VueClipboardConfig
     Vue.prototype.$copyText = function (text, container) {
       return new Promise(function (resolve, reject) {
-        var fakeElement = document.createElement('button')
-        var clipboard = new Clipboard(fakeElement, {
+        const fakeElement = document.createElement('button')
+        const clipboard = new Clipboard(fakeElement, {
           text: function () { return text },
           action: function () { return 'copy' },
           container: typeof container === 'object' ? container : document.body
@@ -37,17 +37,17 @@ var VueClipboard = {
         } else if (binding.arg === 'error') {
           el._vClipboard_error = binding.value
         } else {
-          var clipboard = new Clipboard(el, {
+          const clipboard = new Clipboard(el, {
             text: function () { return binding.value },
             action: function () { return binding.arg === 'cut' ? 'cut' : 'copy' },
             container: VueClipboardConfig.autoSetContainer ? el : undefined
           })
           clipboard.on('success', function (e) {
-            var callback = el._vClipboard_success
+            const callback = el._vClipboard_success
             callback && callback(e)
           })
           clipboard.on('error', function (e) {
-            var callback = el._vClipboard_error
+            const callback = el._vClipboard_error
             callback && callback(e)
           })
           el._vClipboard = clipboard
@@ -64,7 +64,7 @@ var VueClipboard = {
         }
       },
       unbind: function (el, binding) {
-        if(!el._vClipboard) return
+        if (!el._vClipboard) return
         if (binding.arg === 'success') {
           delete el._vClipboard_success
         } else if (binding.arg === 'error') {
